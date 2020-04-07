@@ -1,0 +1,133 @@
+<div class="row" width="500px">
+  
+  <div class="" style=" margin: auto" width="500px">
+
+    <div class="card">
+      <!-- When User is Not Logged In -->
+      <div class="card-body" *ngIf="!userDetails">
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <div class="btn-group">
+              <button type="button" class="btn" [ngClass]="{'btn-primary
+                active': selectedVal == 'login' }"
+                (click)="onValChange('login')"><strong>Login</strong></button>
+              <button type="button" class="btn" [ngClass]="{'btn-primary
+                active': selectedVal == 'register' }"
+                (click)="onValChange('register')"><strong>Register</strong></button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+         
+          <input type="email" class="form-control" [(ngModel)]="emailInput"
+            id="email" placeholder="Email">
+        </div>
+        <div class="form-group" *ngIf="!isForgotPassword">
+          <label for="password">Password</label>
+          
+          <input type="password" class="form-control"
+            [(ngModel)]="passwordInput" id="password" placeholder="Password">
+        </div>
+        
+        <div class="form-group" *ngIf="!isForgotPassword">
+
+          <span *ngIf="selectedVal == 'login'; else elseBlock">
+            <button type="button" class="btn btn-primary" (click)="loginUser()">Log In</button>
+          </span>
+          <ng-template #elseBlock>
+            <button type="button" class="btn btn-primary"
+              (click)="registerUser()">Register</button>
+          </ng-template>
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          <a href="javascript:void(0)" (click)="this.isForgotPassword= true;">Forgot
+            Password?</a>
+
+        </div>
+        <div class="form-group" *ngIf="isForgotPassword">
+
+          <button type="button" class="btn" (click)="this.isForgotPassword=
+            false;">Cancel</button>
+          <button type="button" class="btn btn-primary"
+            (click)="forgotPassword()">Get email to reset password</button>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" (click)="googleLogin()" style="cursor: pointer; 
+            background-color: #f4511e; border: none; ">Sign In With Google</button>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" (click)="facebookLogin()" style="cursor: pointer;
+            background-color: #3c5a99; border: none; ">Sign In With Facebook</button>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" (click)="twitterLogin()" style="cursor: pointer;
+            background-color: #1da1f2; border: none; vertical-align:middle ">Sign In With Twitter</button>
+        </div>
+      </div>
+      
+      <!-- When Uses is Logged In using Email or Google Account -->
+      <div class="card-body" *ngIf="userDetails">
+        <div class="row">
+          <div class="col-sm-12">
+            <ul class="list-group">
+              <li class="list-group-item">Uid: {{userDetails['uid']}}</li>
+              <li class="list-group-item">Display Name: {{userDetails['displayName']}}</li>
+              <li class="list-group-item">Email: {{userDetails['email']}}</li>
+              <li class="list-group-item">Is Email Verified: {{userDetails['emailVerified']}}</li>
+            <!--  <li class="list-group-item">Message : {{(message | async)?.notification.title}}</li>
+              <li class="list-group-item">{{(message | async)?.notification.body}}</li> -->
+              <li class="list-group-item">
+                  <div class="row">
+                      <p class="col">{{numberOfLikes}}</p>
+                      <p class="col">{{numberOfDislikes}}</p>
+                      <button class="col btn btn-success" (click)="likeButtonClick()">Like</button>
+                      <button class="col btn btn-danger" (click)="dislikeButtonClick()">Dislike</button>
+                  </div>    
+                <button type="button" class="btn btn-danger"
+                  (click)="logoutUser()">Logout</button>
+              </li>
+              <form>
+                <div class="form-group">
+                  <label for="money">Input Money</label>
+                  <input type="text" class="form-control" id="money">
+                </div>
+                <button type="submit" class="btn btn-success" (click)="create()">Add</button>  
+              </form>
+              
+              <table>
+                <thead>
+                  <th>Number</th>
+                  <th>Created At</th>
+                  <th>Expire At</th>
+                  <th>Amount</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let policy of policies">
+              
+                    <td>{{money.storeNumber}}</td>
+                    <td>{{money.creationDate}}</td>
+                    <td>{{money.expireDate}}</td>
+                    <td>{{money.moneyAmount}}</td>
+                    <td>
+                        <button (click)="delete(policy.id)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alert alert-{{responseMessageType}}" role="alert"
+      *ngIf="responseMessage.length">
+      {{responseMessage}}
+    </div>
+  </div>
+</div>
+
